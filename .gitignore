@@ -1,0 +1,22 @@
+cat > .gitignore <<'EOF'
+# AWS credentials
+.env
+.env.*
+!.env.example
+.aws/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+EOF
