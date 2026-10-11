@@ -1,9 +1,11 @@
-cat > .gitignore <<'EOF'
-# AWS credentials
+# Credentials
 .env
 .env.*
 !.env.example
 .aws/
+credentials
+*.pem
+*.key
 
 # Terraform
 .terraform/
@@ -11,12 +13,16 @@ cat > .gitignore <<'EOF'
 *.tfstate.*
 *.tfvars
 *.tfvars.json
+.terraform.tfvars.json
 crash.log
 crash.*.log
+
+# Node.js
+node_modules/
 
 # macOS
 .DS_Store
 
-# Node.js
-node_modules/
-EOF
+# draw.io backup
+*.drawio.bkp
+.*.bkp
