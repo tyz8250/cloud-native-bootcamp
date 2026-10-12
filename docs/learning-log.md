@@ -1,8 +1,9 @@
 # Cloud Native Bootcamp 学習ログ
 
-## Step 1：Web Hosting_
+## Step 1：Web Hosting
 
-### 今日やったこと
+### Phase 1：S3静的Webサイトホスティング
+
 - S3のバケットを作成
 - S3で静的Webサイトをホスト
 
@@ -27,7 +28,7 @@
 ### 図解_S3でのホスティング
 ![S3静的Webサイト構成図](./architecture/step1-s3-public.drawio.png)
 
-### 今日やったこと(2026-10-11)
+### Phase 2：CloudFrontによるキャッシュ配信
 
 ### 理解したこと
 - CloudFrontは特定のリージョンに依存しないグローバルなサービス
@@ -66,5 +67,27 @@
 CloudFrontのキャッシュにより、同一ファイルを
 S3から毎回取得する必要がないことを確認した。
 
-また、ブラウザキャッシュとCloudFrontの
-キャッシュは別の仕組みであることを理解した。
+ブラウザキャッシュとCloudFrontキャッシュは、保存場所と管理主体が異なる。ブラウザキャッシュは利用者の端末で再利用され、CloudFrontキャッシュはAWS側で複数ユーザーへの配信に利用される。
+
+### Phase 3：CloudFront + OACによるセキュリティ改善
+
+#### 目的
+S3を非公開にしたままCloudFront経由でWebサイトを配信する。
+
+#### 実施内容
+- S3のパブリックアクセスブロックを有効化
+- 公開用バケットポリシーを削除
+- OACによる署名付きアクセスを設定
+- 特定のCloudFrontディストリビューションに読み取りを許可
+
+#### 検証結果
+- CloudFront経由：200 OK
+- S3直接アクセス：403 Forbidden
+- Invalidation後：200 OK
+
+#### 設計上の学び
+OACによる署名付きアクセスと、
+S3バケットポリシーによる認可を組み合わせることで、
+S3を一般公開せずにWebサイトを配信できる。
+  
+![S3+cloudFront静的Webサイト構成図(OAC)](./architecture/step1-cloudfront-private-s3.drawio.png)
